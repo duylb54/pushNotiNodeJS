@@ -3,7 +3,7 @@ import { throwIfMissing, sendPushNotification } from './utils.js';
 export default async ({ req, res, log, error }) => {
   try {
     throwIfMissing(req.body, ['deviceToken', 'message']);
-    throwIfMissing(req.body.message, ['title', 'body']);
+    throwIfMissing(req.body.message, ['title', 'body', 'image']);
   } catch (err) {
     return res.json({ ok: false, error: err.message }, 400);
   }
@@ -12,7 +12,8 @@ export default async ({ req, res, log, error }) => {
     const response = await sendPushNotification({
       notification: {
         title: req.body.message.title,
-        body: req.body.message.body
+        body: req.body.message.body,
+        image: req.body.message.image
       },
       // extra options payload here
       data: req.body.data ?? {},
